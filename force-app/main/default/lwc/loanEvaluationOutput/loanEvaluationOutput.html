@@ -1,0 +1,68 @@
+<template>
+    <lightning-card title="Loan Evaluation Result" icon-name="standard:approval">
+        
+        <!-- HEADER SECTION -->
+        <div class="slds-p-horizontal_medium slds-p-top_medium">
+            <div class="slds-grid slds-wrap slds-align_absolute-center">
+
+                <!-- Recommendation -->
+                <div class="slds-col slds-size_1-of-2 slds-text-align_left">
+                    <p class="slds-text-title_caps slds-m-bottom_xx-small">
+                        Recommendation
+                    </p>
+                    <lightning-badge 
+                        label={recommendation}
+                        class={recommendationClass}>
+                    </lightning-badge>
+                </div>
+
+                <!-- Confidence -->
+                <div class="slds-col slds-size_1-of-2 slds-text-align_right">
+                    <p class="slds-text-title_caps slds-m-bottom_xx-small">
+                        Confidence
+                    </p>
+                    <p class="slds-text-heading_large slds-text-color_success">
+                        {confidence}%
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- DIVIDER -->
+        <lightning-layout class="slds-p-horizontal_medium slds-p-vertical_small">
+            <lightning-layout-item size="12">
+                <div class="slds-border_bottom"></div>
+            </lightning-layout-item>
+        </lightning-layout>
+
+        <!-- REASONING -->
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <p class="slds-text-title_caps slds-m-bottom_small">
+                Detailed Reasoning
+            </p>
+
+            <lightning-formatted-rich-text
+                value={reasoning}>
+            </lightning-formatted-rich-text>
+        </div>
+
+        <!-- SOURCE DOCUMENTS -->
+        <template if:true={sourceDocuments}>
+            <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+                <p class="slds-text-title_caps slds-m-bottom_small">
+                    Source Documents
+                </p>
+
+                <ul class="slds-list_dotted slds-m-left_medium">
+                    <template for:each={sourceDocumentsList} for:item="doc">
+                        <li key={doc} class="slds-m-bottom_xx-small">
+                            {doc}
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </template>
+
+    </lightning-card>
+</template>

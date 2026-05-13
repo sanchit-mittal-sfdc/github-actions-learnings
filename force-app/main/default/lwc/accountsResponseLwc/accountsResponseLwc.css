@@ -1,0 +1,47 @@
+.account-list {
+    padding: 1rem;
+}
+
+.account-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-left: 4px solid #1B96FF;
+}
+
+.account-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: .75rem;
+}
+
+.account-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-left: .5rem;
+}
+
+.row {
+    display: flex;
+    margin-bottom: .25rem;
+}
+
+.label {
+    font-weight: 600;
+    width: 90px;
+    color: #444;
+}
+
+.value {
+    flex: 1;
+    color: #222;
+}
+
+.empty-state {
+    padding: 1rem;
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}

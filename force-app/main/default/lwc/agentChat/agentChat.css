@@ -1,0 +1,90 @@
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+}
+
+/* Chat Window */
+.chat-window {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    background: #f4f6f9;
+}
+
+/* Chat Bubble Base */
+.chat-bubble {
+    max-width: 75%;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+/* Agent Bubble */
+.chat-bubble.agent {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    align-self: flex-start;
+}
+
+/* User Bubble */
+.chat-bubble.user {
+    background: #0176d3;
+    color: #ffffff;
+    align-self: flex-end;
+}
+
+/* Sender Name */
+.sender-name {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.7;
+    margin-bottom: 4px;
+}
+
+/* Input Bar */
+.input-bar {
+    display: flex;
+    gap: 8px;
+    padding: 10px;
+    border-top: 1px solid #e5e7eb;
+    background: #ffffff;
+}
+
+/* Error */
+.error-text {
+    padding: 8px 12px;
+    color: #dc2626;
+    font-size: 12px;
+}
+
+/* Typing Animation */
+.typing {
+    display: flex;
+    gap: 4px;
+}
+
+.typing span {
+    width: 6px;
+    height: 6px;
+    background: #9ca3af;
+    border-radius: 50%;
+    animation: blink 1.4s infinite both;
+}
+
+.typing span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes blink {
+    0% { opacity: 0.2; }
+    20% { opacity: 1; }
+    100% { opacity: 0.2; }
+}

@@ -1,0 +1,45 @@
+<template>
+    <lightning-card icon-name="standard:food_and_drink" class="food-card-container">
+        <span class="foodTitle">Available Food Options</span>
+        <!-- Food Cards List -->
+        <div class="food-list-container">
+            <template for:each={foodData} for:item="food">
+                <div key={food.name} class="food-card">
+                    <!-- Food Image Section -->
+                    <div class="food-image">
+                        <lightning-icon icon-name="custom:custom93" size="large" class="food-icon"></lightning-icon>
+                    </div>  
+
+                    <!-- Food Info Section -->
+                    <div class="food-info">
+                        <h2 class="food-name">{food.name}</h2>
+                        <div class="food-type">{food.type}</div>
+                    </div>
+
+                    <!-- Price and Size Section -->
+                    <div class="price-size">
+                        <div class="price">
+                            <strong>${food.price}</strong>
+                        </div>
+                        <div class="size">
+                            Size: {food.size}
+                        </div>
+                    </div>
+
+                    <!-- Additional Info Section -->
+                    <div class="additional-info">
+                        <div class="buffet-status">
+                            <lightning-icon icon-name="utility:food_and_drink" size="small"></lightning-icon>
+                            <span>Part of Buffet: {food.buffetStatus}</span>
+                        </div>
+                    </div>
+
+                    <!-- Order Button -->
+                    <div class="card-footer">
+                        <lightning-button variant="brand" label="Order Now" onclick={handleOrderFood} data-food-name={food.name}></lightning-button>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

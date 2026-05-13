@@ -1,0 +1,71 @@
+<template>
+    <lightning-card title="Accounts" icon-name="standard:account">
+        <div class="account-list">
+
+            <template if:true={filteredAccountRecords}>
+
+                <lightning-input type="Search" value={searchVal} onchange={handleSearchValChange}></lightning-input>
+
+                <template for:each={filteredAccountRecords} for:item="account">
+
+                    <div key={account.accId} class="account-card">
+
+                        <!-- Header -->
+                        <div class="account-header">
+                            <lightning-icon icon-name="standard:account" size="small"></lightning-icon>
+                            <span class="account-name">{account.name}</span>
+                        </div>
+
+                        <!-- Info Body -->
+                        <div class="account-body">
+
+                            <div class="row">
+                                <span class="label">Website:</span>
+                                <span class="value">{account.website}</span>
+                            </div>
+
+                            <div class="row">
+                                <span class="label">Phone:</span>
+                                <span class="value">{account.phone}</span>
+                            </div>
+
+                            <div class="row">
+                                <span class="label">Industry:</span>
+                                <span class="value">{account.industry}</span>
+                            </div>
+
+                            <div class="row">
+                                <span class="label">Type:</span>
+                                <span class="value">{account.type}</span>
+                            </div>
+
+                            <div class="row">
+                                <span class="label">Rating:</span>
+                                <span class="value">{account.rating}</span>
+                            </div>
+
+                            <div class="row">
+                                <span class="label">Owner:</span>
+                                <span class="value">{account.ownerName}</span>
+                            </div>
+
+                            <div class="row">
+                                <lightning-button label="View Account" data-acc-id={account.accId} variant="brand" onclick={handleViewAccount}></lightning-button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </template>
+            </template>
+
+            <template if:false={filteredAccountRecords}>
+                <div class="empty-state">
+                    No Accounts Available
+                </div>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

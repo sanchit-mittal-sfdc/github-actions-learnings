@@ -1,0 +1,28 @@
+<template>
+    <div class="snake-container">
+        <div class="header">
+            <div class="title">Snake Game</div>
+            <div class="score">Score: {score}</div>
+        </div>
+        <div class="controls">
+            <span>Use arrow keys to move. Press "Start" to play.</span>
+            <lightning-button variant="brand" label={buttonLabel} onclick={handleStartClick}></lightning-button>
+        </div>
+        <div class="board-wrapper">
+            <canvas lwc:dom="manual"></canvas>
+            <template if:true={gameOver}>
+                <div class="overlay">
+                    <div class="overlay-content">
+                        <div class="overlay-title">Game Over</div>
+                        <div class="overlay-score">Final Score: {score}</div>
+                        <lightning-button
+                            label="Play Again"
+                            variant="brand"
+                            onclick={handleStartClick}
+                        ></lightning-button>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

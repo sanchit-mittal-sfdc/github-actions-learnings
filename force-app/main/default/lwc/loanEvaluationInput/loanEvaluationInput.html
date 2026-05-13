@@ -1,0 +1,102 @@
+<template>
+    <lightning-card title="Loan Application Details" icon-name="standard:loan">
+        <div class="slds-p-around_medium">
+
+            <lightning-layout multiple-rows>
+
+                <lightning-layout-item size="6" padding="around-small">
+                    <lightning-input
+                        onchange={handleInputChange}
+                        name="applicantName"
+                        label="Applicant Name"
+                        value={applicantName}
+                        disabled={readOnly}
+                        required>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="6" padding="around-small">
+                    <lightning-combobox
+                        onchange={handleInputChange}
+                        name="loanType"
+                        label="Loan Type"
+                        value={loanType}
+                        options={loanTypeOptions}
+                        disabled={readOnly}
+                        required>
+                    </lightning-combobox>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="6" padding="around-small">
+                    <lightning-input
+                        onchange={handleInputChange}
+                        name="loanAmount"
+                        type="number"
+                        label="Loan Amount (₹)"
+                        value={loanAmount}
+                        disabled={readOnly}
+                        formatter="currency"
+                        step="1000"
+                        required>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="6" padding="around-small">
+                    <lightning-input
+                        onchange={handleInputChange}
+                        name="cibilScore"
+                        type="number"
+                        label="CIBIL Score"
+                        value={cibilScore}
+                        min="300"
+                        max="900"
+                        disabled={readOnly}
+                        required>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="6" padding="around-small">
+                    <lightning-input
+                        onchange={handleInputChange}
+                        name="monthlyIncome"
+                        type="number"
+                        label="Monthly Income (₹)"
+                        value={monthlyIncome}
+                        disabled={readOnly}
+                        formatter="currency"
+                        required>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="6" padding="around-small">
+                    <lightning-combobox
+                        onchange={handleInputChange}
+                        name="employmentType"
+                        label="Employment Type"
+                        value={employmentType}
+                        options={employmentOptions}
+                        disabled={readOnly}
+                        required>
+                    </lightning-combobox>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" padding="around-small">
+                    <lightning-textarea
+                        onchange={handleInputChange}
+                        name="miscellaneousDetails"
+                        label="Additional Remarks / Risk Notes"
+                        value={miscellaneousDetails}
+                        disabled={readOnly}
+                        placeholder="Any additional information, deviations, or justifications...">
+                    </lightning-textarea>
+                </lightning-layout-item>
+
+            </lightning-layout>
+
+        </div>
+
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium slds-text-color_weak">
+            Information provided here will be evaluated strictly as per internal credit policies.
+        </div>
+    </lightning-card>
+</template>

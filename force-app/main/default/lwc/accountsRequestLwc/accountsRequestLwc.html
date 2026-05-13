@@ -1,0 +1,40 @@
+<template>
+    
+    <lightning-card title="Accounts Filter" icon-name="standard:account">
+
+        <lightning-layout multiple-rows>
+
+            <lightning-layout-item size="12" padding="around-small">
+                <lightning-combobox
+                    label="Filter By Type"
+                    name="typeVal"
+                    value={typeVal}
+                    placeholder="Select Type"
+                    required="true"
+                    options={typeOptions}
+                    onchange={handleInputChange}
+                    read-only={readOnly}
+                >
+                </lightning-combobox>
+            </lightning-layout-item>
+
+            <lightning-layout-item size="12" padding="around-small">
+                <lightning-combobox
+                    name="ratingVal"
+                    label="Filter By Rating"
+                    value={ratingVal}
+                    placeholder="Select Rating"
+                    required="true"
+                    options={ratingOptions}
+                    onchange={handleInputChange}
+                    read-only={readOnly}
+                >
+                </lightning-combobox>
+            </lightning-layout-item>
+
+        </lightning-layout>
+
+
+        
+    </lightning-card>
+</template>

@@ -1,0 +1,70 @@
+<template>
+    <lightning-card title="Custom Pitch Maker Using Flex Template">
+
+        <lightning-layout multiple-rows>
+
+            <lightning-layout-item size="12" padding="around-small">
+
+                <lightning-record-picker
+                    label="Select Contact"
+                    placeholder="Search Contacts..."
+                    object-api-name="Contact"
+                    field-level-help="Select a contact to generate a custom pitch for."
+                    value={contactId}
+                    data-fieldname="contactId"
+                    onchange={handleChange}
+                >
+                </lightning-record-picker>
+
+            </lightning-layout-item>
+
+
+            <lightning-layout-item size="12" padding="around-small">
+
+                <lightning-record-picker
+                    label="Select First Product"
+                    placeholder="Search Products..."
+                    object-api-name="Product2"
+                    field-level-help="Select First Product to generate a custom pitch for."
+                    value={product1Id}
+                    data-fieldname="product1Id"
+                    onchange={handleChange}
+                >
+                </lightning-record-picker>
+
+            </lightning-layout-item>
+
+
+
+            <lightning-layout-item size="12" padding="around-small">
+
+                <lightning-record-picker
+                    label="Select Second Product"
+                    placeholder="Search Products..."
+                    object-api-name="Product2"
+                    field-level-help="Select Second Product to generate a custom pitch for."
+                    value={product2Id}
+                    data-fieldname="product2Id"
+                    onchange={handleChange}
+                >
+                </lightning-record-picker>
+
+            </lightning-layout-item>
+
+            <lightning-layout-item size="12" padding="around-small">
+
+                <lightning-button variant="brand" label="Generate Pitch" onclick={generatePitch}></lightning-button>
+
+            </lightning-layout-item>
+
+            <lightning-layout-item size="12" padding="around-small">
+
+                <lightning-formatted-rich-text value={pitch}></lightning-formatted-rich-text>
+                
+            </lightning-layout-item>
+
+        </lightning-layout>
+
+    </lightning-card>
+        
+</template>
