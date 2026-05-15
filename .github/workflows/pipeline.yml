@@ -32,7 +32,7 @@ jobs:
 
     # This is where we set the environment variable VALIDATE_ENV based on the branch name. The value of VALIDATE_ENV is determined using a conditional expression that checks the branch name (github.ref_name) and assigns the corresponding environment value (production1 for main, uat for uat, qa for qa, and int for int). Just using this to print the environemnt in the steps and not using it to set the environment for the job because job-level environment is resolved before runtime env variables and hence we cannot use this variable to set the environment for the job. We will have to duplicate the logic to set the environment for the job directly based on the branch name in the environment key.
     env:
-      VALIDATE_ENV: ${{ (github.ref_name == 'main' && 'production') || (github.ref_name == 'uat' && 'uat') || (github.ref_name == 'qa' && 'qa') || (github.ref_name == 'int' && 'int') }}
+      VALIDATE_ENV: ${{ (github.base_ref == 'main' && 'production') || (github.base_ref == 'uat' && 'uat') || (github.base_ref == 'qa' && 'qa') || (github.base_ref == 'int' && 'int') }}
     
 
     # V.Imp: not same as env which is for setting environment variables rather this is for setting the environment for the job which allows for environent-specific configration automatially For eg If environment is production then credentials of production is used and if environment is uat then credentials of uat is used and so on. This is a special feature of GitHub Actions that allows you to define different environments for your jobs, which can have their own secrets, variables, and protection rules. By setting the environment based on the branch name, you can ensure that the correct configurations and credentials are used for each environment, providing a more secure and organized deployment process. 
@@ -50,7 +50,7 @@ jobs:
        # Print the Environment to which we are validating. This is useful for debugging and ensuring that the correct environment is being targeted for deployment based on the branch name.
        - name: "Print Target Environment"
          run: |
-           echo "Deploying to environment: ${{ env.VALIDATE_ENV }}" # This will print the environment that has been set for this job, which is determined by the branch name. For example
+           echo "Validating in environment: ${{ env.VALIDATE_ENV }}" # This will print the environment that has been set for this job, which is determined by the branch name. For example
        
        # Checkout the code 
        - name: "Checkout code"
@@ -113,11 +113,11 @@ jobs:
       # Authenticate to Salesforce org using JWT-based flow
        - name: "Authenticate to Salesforce Org"
          run: |
-           sf org login jwt 
-             --client-id ${{ secrets.CLIENT_ID }} 
-             --jwt-key-file server.key 
-             --username ${{ vars.USERNAME }} 
-             --set-default 
+           sf org login jwt \
+             --client-id ${{ secrets.CLIENT_ID }} \
+             --jwt-key-file server.key \
+             --username ${{ vars.USERNAME }} \
+             --set-default \
              --instance-url ${{ vars.INSTANCE_URL }}
 
 
