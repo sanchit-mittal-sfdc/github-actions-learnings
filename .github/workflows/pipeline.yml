@@ -1,0 +1,79 @@
+name: "Salesforce CI/CD Pipeline"
+on:
+  workflow_dispatch: # Allows manual triggering of the workflow from the GitHub Actions tab along with variable inputs
+
+  push:
+    branches:
+      - main
+      - feature/** # Reason for double asterisk: to include all subdirectories under feature for eg feautre/abc as well as feature/abc/def
+
+
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      # Checkout the code 
+       - name: "Checkout code"
+         uses: actions/checkout@v2
+         with:
+           fetch-depth: 0 # Fetch all history for all branches and tags
+
+
+       # Install salesforce cli    
+       - name: "Install Salesforce CLI"
+         run: |
+           npm install @salesforce/cli --global
+           which sf
+           command -v sf
+           pwd
+
+      # Verify Salesforce CLI installation     
+       - name: "Check if Salesforce CLI is working"
+         run: |
+           if sf --version | grep "/" ; then
+             echo "Salesforce CLI is installed and working."
+           else
+             echo "Salesforce CLI installation failed."
+             exit 1
+           fi
+      
+      # Create jwt key file from the content stored in GitHub secrets
+       - name: "Create JWT Key File"
+         run: |
+           echo ${{ secrets.JWT_KEY_FILE_CONTENT }} > server.key 
+           # Set appropriate permissions for the key file i.e. RW for owner only
+           chmod 600 server.key 
+
+      # Authenticate to Salesforce org using JWT-based flow
+       - name: "Authenticate to Salesforce Org"
+         run: |
+           sf org login jwt --client-id ${{ secrets.CLIENT_ID }} --jwt-key-file server.key --username ${{ vars.USERNAME }} --set-default --instance-url ${{ vars.INSTANCE_URL }}
+
+
+      # Verify authentication by displaying the authenticated org's username
+       - name: "Verify Authentication"
+         run: |
+           sf org display     
+
+        
+      # Cean up the JWT key file at last. This will ensure that the key file is not left on the runner after the workflow completes, enhancing security by minimizing the risk of unauthorized access to the key file.
+       - name: "Clean Up JWT Key File"
+         if: always() # This ensures that the cleanup step runs regardless of the success or failure of previous steps, ensuring that the key file is removed in all scenarios.
+         run: |
+           # Remove the JWT key file to prevent unauthorized access -f flag is used to force deletion without prompting for confirmation, which is useful in automated scripts to ensure that the cleanup process is not interrupted.
+           rm -f server.key     
+
+           # verify that the key file has been removed successfully
+           # [ ... ] this is test command to check if the file exists. -f seraches for file only in the current directory and returns true if the file exists and is a regular file. 
+           # CONT.. Other options are -d for directory, -e for existence (file or directory), etc. In this case, we want to check if the file still exists after attempting to remove it, 
+           # CONT.. which would indicate a failure in the cleanup process.
+           # Reason for using this [] over ls | grep is that the latter can be less reliable in scripts, especially if there are multiple files or if the file name contains spaces or special characters. The test command with -f provides a more direct and reliable way to check for the existence of a specific file.
+           
+           if [ -f server.key ]; then 
+             echo "Failed to remove the JWT key file."
+             exit 1 # Exit with a non-zero status to indicate failure, which can be useful for debugging and ensuring that the workflow does not proceed if the cleanup step fails.
+           else
+             echo "JWT key file removed successfully."
+           fi
