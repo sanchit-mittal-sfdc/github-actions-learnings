@@ -17,12 +17,28 @@ jobs:
     
     # The use of 'ubuntu-latest' as the runner provides a stable and widely used environment for running the CI/CD pipeline, ensuring compatibility with a wide range of tools and dependencies commonly used in Salesforce development and deployment processes. It also allows for easy maintenance and updates, as GitHub regularly updates the 'ubuntu-latest' image with the latest security patches and software versions.
     runs-on: ubuntu-latest
+
+
+    # This is where we set the environment variable DEPLOY_ENV based on the branch name. The value of DEPLOY_ENV is determined using a conditional expression that checks the branch name (github.ref_name) and assigns the corresponding environment value (production1 for main, uat for uat, qa for qa, and int for int). Just using this to print the environemnt in the steps and not using it to set the environment for the job because job-level environment is resolved before runtime env variables and hence we cannot use this variable to set the environment for the job. We will have to duplicate the logic to set the environment for the job directly based on the branch name in the environment key.
+    env:
+      DEPLOY_ENV: ${{ (github.ref_name == 'main' && 'production1') || (github.ref_name == 'uat' && 'uat') || (github.ref_name == 'qa' && 'qa') || (github.ref_name == 'int' && 'int') }}
     
+
+    # V.Imp: not same as env which is for setting environment variables rather this is for setting the environment for the job which allows for environent-specific configration automatially For eg If environment is production then credentials of production is used and if environment is uat then credentials of uat is used and so on. This is a special feature of GitHub Actions that allows you to define different environments for your jobs, which can have their own secrets, variables, and protection rules. By setting the environment based on the branch name, you can ensure that the correct configurations and credentials are used for each environment, providing a more secure and organized deployment process. 
+    # WE NEED NOT MANAGE diff secrets like SF_USERNAME_Prod, SF_USERNAME_UAT etc. Instead we can just use the same secret name like SF_USERNAME and based on the environment set for the job, it will automatically pick the correct value from the secrets defined for that environment. This simplifies secret management and reduces the chances of errors in using incorrect secrets for different environments. For example, if the job is running for main branch and we have set DEPLOY_ENV to production1, then it will automatically use the secrets defined for production1 environment when we reference those secrets in our steps.  
     # Set the environment based on the branch name. This allows for environment-specific configurations and deployments, ensuring that changes are deployed to the correct environment based on the branch being pushed or manually triggered. The use of logical OR (||) ensures that the correct environment is selected based on the branch name, providing a clear mapping between branches and their corresponding environments.
     # You might be thinking when i manually run the workflow from the GitHub Actions tab, there is no push-to-branch associated with it, so how will this condition work? Well it does have since you need to select the branch while triggering the workflow manually, so it will take the branch name you select and set the environment accordingly. For example, if you select main branch while triggering the workflow manually, it will set the environment to production.
-    environment: ${{ (github.ref_name == 'main' && 'production') || (github.ref_name == 'uat' && 'uat') || (github.ref_name == 'qa' && 'qa') || (github.ref_name == 'int' && 'int') }}                  
+    
+    # Below I cant use environmnt variable DEPLOY_ENV to set the environment and rather i have to duolciate the logic BECAUSE job-level environment resolve hota hai before runtime env variables. So at the time of resolving the environment for the job, the DEPLOY_ENV variable is not yet set and hence it cannot be used in the environment key. This is a common scenario in GitHub Actions where job-level environment variables cannot be used to determine the environment for the job itself, as they are not yet available at the time of job initialization. Therefore, we have to duplicate the logic to set the environment directly based on the branch name in the environment key, ensuring that the correct environment is set for the job based on the branch that triggered it.
+    environment: ${{ (github.ref_name == 'main' && 'production1') || (github.ref_name == 'uat' && 'uat') || (github.ref_name == 'qa' && 'qa') || (github.ref_name == 'int' && 'int') }} 
     
     steps:
+
+       # Print the Environment to which we are deploying. This is useful for debugging and ensuring that the correct environment is being targeted for deployment based on the branch name.
+       - name: "Print Target Environment"
+         run: |
+           echo "Deploying to environment: ${{ env.DEPLOY_ENV }}" # This will print the environment that has been set for this job, which is determined by the branch name. For example
+       
        # Checkout the code 
        - name: "Checkout code"
          uses: actions/checkout@v6
@@ -51,13 +67,15 @@ jobs:
 
       # Verify Salesforce CLI installation     
        - name: "Check if Salesforce CLI is working"
-         run: |
-           if sf --version | grep "/" ; then
-             echo "Salesforce CLI is installed and working."
-           else
-             echo "Salesforce CLI installation failed."
-             exit 1
-           fi
+         run: command -v sf # Just this command is enough to check if the CLI is installed and working, because if the command is not found, it will return a non-zero exit code which will cause the workflow to fail. There is no need to check for version or any other command, as the presence of the sf command itself indicates that the CLI is installed and can be executed successfully.
+
+          # EARLIER I WAS USING BELOW CODE TO CHECK IF THE CLI IS WORKING OR NOT, BUT IT WAS UNNECESSARY AND CAN BE SIMPLIFIED TO JUST CHECKING THE PRESENCE OF THE COMMAND USING command -v sf. THE REASON FOR THIS IS THAT IF THE CLI IS NOT INSTALLED OR NOT WORKING PROPERLY, THEN command -v sf WILL RETURN A NON-ZERO EXIT CODE, CAUSING THE WORKFLOW TO FAIL IMMEDIATELY. THERE IS NO NEED TO CHECK FOR VERSION OR ANY OTHER COMMAND, AS THE PRESENCE OF THE sf COMMAND ITSELF INDICATES THAT THE CLI IS INSTALLED AND CAN BE EXECUTED SUCCESSFULLY.
+          #  if sf --version | grep "/" ; then
+          #    echo "Salesforce CLI is installed and working."
+          #  else
+          #    echo "Salesforce CLI installation failed."
+          #    exit 1
+          #  fi
       
       # Create jwt key file from the content stored in GitHub secrets
        - name: "Create JWT Key File"
