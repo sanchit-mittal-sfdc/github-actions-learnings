@@ -42,7 +42,7 @@ jobs:
       # Create jwt key file from the content stored in GitHub secrets
        - name: "Create JWT Key File"
          run: |
-           echo ${{ secrets.JWT_KEY_FILE_CONTENT }} > server.key 
+           echo "${{ secrets.JWT_KEY_FILE_CONTENT }}" > server.key 
            # Set appropriate permissions for the key file i.e. RW for owner only
            chmod 600 server.key 
 
