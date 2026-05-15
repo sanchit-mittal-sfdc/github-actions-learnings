@@ -61,9 +61,11 @@ jobs:
        # Just quickly check the values of
        - name: "Print values of currently checked out branch and event details"
          run: |
-           echo "Branch/Ref Name: ${{ github.ref_name }}"  # This gives for eg main, uat, feature/abc etc. without refs/heads/ prefix
-           echo "Event Name: ${{ github.event_name }}"     # This gives the event that triggered the workflow, for eg push, workflow_dispatch etc.
-           echo "Ref: ${{ github.ref }}"                   # This gives the full ref that triggered the workflow, for eg refs/heads/main, refs/heads/uat, refs/heads/feature/abc etc. It includes the refs/heads/ prefix which indicates that it's a branch reference.
+           echo "base_ref (Target Branch for PR): ${{ github.base_ref }}" # This gives the target branch of the PR, for eg main, uat, feature/abc etc. without refs/heads/ prefix. It will be empty for push and workflow_dispatch events since they are not associated with a PR.
+           echo "head_ref (Source Branch for PR): ${{ github.head_ref }}" # This gives the source branch of the PR, for eg feature/abc, feature/xyz etc. without refs/heads/ prefix. It will be empty for push and workflow_dispatch events since they are not associated with a PR.
+           echo "Branch/Ref Name: ${{ github.ref_name }}"                 # 
+           echo "Event Name: ${{ github.event_name }}"                    # 
+           echo "Ref: ${{ github.ref }}"                                  #  
           
            # VIMP:The cirrent checkout branch is determined by the ref that triggered the workflow. So if the workflow was triggered by a push to main branch, then main branch will be checked out. If it was triggered by a push to feature/abc branch, then feature/abc branch will be checked out onto the latest commit of that branch. If it was triggered manually and you select main branch while triggering, then main branch will be checked out.
            echo "VIMP:The cirrent checkout branch is determined by the ref that triggered the workflow. So if the workflow was triggered by a push to main branch, then main branch will be checked out. If it was triggered by a push to feature/abc branch, then feature/abc branch will be checked out onto the latest commit of that branch. If it was triggered manually and you select main branch while triggering, then main branch will be checked out."
