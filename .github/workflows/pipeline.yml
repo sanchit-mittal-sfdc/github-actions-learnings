@@ -16,7 +16,7 @@ jobs:
     steps:
       # Checkout the code 
        - name: "Checkout code"
-         uses: actions/checkout@v2
+         uses: actions/checkout@v6
          with:
            fetch-depth: 0 # Fetch all history for all branches and tags
 
@@ -46,6 +46,18 @@ jobs:
            # Set appropriate permissions for the key file i.e. RW for owner only
            chmod 600 server.key 
 
+
+     # Verify that the JWT key file has been created successfully and has the correct permissions. This step is crucial to ensure that the authentication process can proceed without issues, as an improperly created key file can lead to authentication failures.
+       - name: "Verify JWT Key File Creation"
+         run: |
+           if [ -f server.key ]; then
+             echo "JWT key file created successfully."
+             ls -l server.key # This will show the permissions of the file, which should be -rw------- (600) for security reasons.
+           else
+             echo "Failed to create JWT key file."
+             exit 1
+           fi      
+
       # Authenticate to Salesforce org using JWT-based flow
        - name: "Authenticate to Salesforce Org"
          run: |
@@ -55,7 +67,7 @@ jobs:
       # Verify authentication by displaying the authenticated org's username
        - name: "Verify Authentication"
          run: |
-           sf org display     
+           sf org list     
 
         
       # Cean up the JWT key file at last. This will ensure that the key file is not left on the runner after the workflow completes, enhancing security by minimizing the risk of unauthorized access to the key file.
