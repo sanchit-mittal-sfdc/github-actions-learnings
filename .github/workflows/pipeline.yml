@@ -21,7 +21,7 @@ jobs:
 
     # This is where we set the environment variable DEPLOY_ENV based on the branch name. The value of DEPLOY_ENV is determined using a conditional expression that checks the branch name (github.ref_name) and assigns the corresponding environment value (production1 for main, uat for uat, qa for qa, and int for int). Just using this to print the environemnt in the steps and not using it to set the environment for the job because job-level environment is resolved before runtime env variables and hence we cannot use this variable to set the environment for the job. We will have to duplicate the logic to set the environment for the job directly based on the branch name in the environment key.
     env:
-      DEPLOY_ENV: ${{ (github.ref_name == 'main' && 'production1') || (github.ref_name == 'uat' && 'uat') || (github.ref_name == 'qa' && 'qa') || (github.ref_name == 'int' && 'int') }}
+      DEPLOY_ENV: ${{ (github.ref_name == 'main' && 'production') || (github.ref_name == 'uat' && 'uat') || (github.ref_name == 'qa' && 'qa') || (github.ref_name == 'int' && 'int') }}
     
 
     # V.Imp: not same as env which is for setting environment variables rather this is for setting the environment for the job which allows for environent-specific configration automatially For eg If environment is production then credentials of production is used and if environment is uat then credentials of uat is used and so on. This is a special feature of GitHub Actions that allows you to define different environments for your jobs, which can have their own secrets, variables, and protection rules. By setting the environment based on the branch name, you can ensure that the correct configurations and credentials are used for each environment, providing a more secure and organized deployment process. 
@@ -30,7 +30,7 @@ jobs:
     # You might be thinking when i manually run the workflow from the GitHub Actions tab, there is no push-to-branch associated with it, so how will this condition work? Well it does have since you need to select the branch while triggering the workflow manually, so it will take the branch name you select and set the environment accordingly. For example, if you select main branch while triggering the workflow manually, it will set the environment to production.
     
     # Below I cant use environmnt variable DEPLOY_ENV to set the environment and rather i have to duolciate the logic BECAUSE job-level environment resolve hota hai before runtime env variables. So at the time of resolving the environment for the job, the DEPLOY_ENV variable is not yet set and hence it cannot be used in the environment key. This is a common scenario in GitHub Actions where job-level environment variables cannot be used to determine the environment for the job itself, as they are not yet available at the time of job initialization. Therefore, we have to duplicate the logic to set the environment directly based on the branch name in the environment key, ensuring that the correct environment is set for the job based on the branch that triggered it.
-    environment: ${{ (github.ref_name == 'main' && 'production1') || (github.ref_name == 'uat' && 'uat') || (github.ref_name == 'qa' && 'qa') || (github.ref_name == 'int' && 'int') }} 
+    environment: ${{ (github.ref_name == 'main' && 'production') || (github.ref_name == 'uat' && 'uat') || (github.ref_name == 'qa' && 'qa') || (github.ref_name == 'int' && 'int') }} 
     
     steps:
 
