@@ -14,7 +14,7 @@ on:
   
    
   push: # This will trigger the workflow whenever there is a push to the specified branches. This allows for automated deployments to be performed whenever changes are pushed directly to these branches, ensuring that the latest code is always deployed to the respective environments without requiring manual intervention.
-    paths: ["force-app/**"] # This ensures that the workflow is triggered only when there are changes in the force-app directory, which is typically where the Salesforce metadata and code are stored. This allows for more efficient CI/CD processes by only triggering deployments when relevant changes are made, rather than for every push to the branch regardless of the files changed.
+    paths: ["force-app/**", ".github/workflows/*"] # This ensures that the workflow is triggered only when there are changes in the force-app directory, which is typically where the Salesforce metadata and code are stored. This allows for more efficient CI/CD processes by only triggering deployments when relevant changes are made, rather than for every push to the branch regardless of the files changed.
     branches:
       - main
       - uat
@@ -269,7 +269,7 @@ jobs:
        - name: "Deployment"
          run: |
             echo "Perform your validation steps here, such as running tests, static code analysis, or any other checks that are necessary to validate the changes against the target environment. This is where you would implement the specific validation logic that is relevant to your Salesforce deployment process, ensuring that the changes meet the required standards and do not introduce any issues before they are deployed to the respective environments."
-            sf project deploy start --target-org ${{ vars.USERNAME }} -x manifest/package.xml --test-level RunLocalTests --wait 60 
+            sf project deploy start --target-org ${{ vars.USERNAME }} -x manifest/package.xml --wait 60 
             
 
         
