@@ -3,6 +3,7 @@ on:
   workflow_dispatch: # Allows manual triggering of the workflow from the GitHub Actions tab along with variable inputs
 
   pull_request:
+    paths: ["force-app/**"] # This ensures that the workflow is triggered only when there are changes in the force-app directory, which is typically where the Salesforce metadata and code are stored. This allows for more efficient CI/CD processes by only triggering deployments when relevant changes are made, rather than for every PR regardless of the files changed.
     branches: # Here branches are target branches for PRs, so if a PR is raised targeting any of these branches, the workflow will be triggered. This allows for automated checks and deployments to be performed when changes are proposed to these specific branches, ensuring that the code being merged meets the necessary quality and deployment standards.
       - main
       - uat
@@ -13,6 +14,7 @@ on:
   
    
   push: # This will trigger the workflow whenever there is a push to the specified branches. This allows for automated deployments to be performed whenever changes are pushed directly to these branches, ensuring that the latest code is always deployed to the respective environments without requiring manual intervention.
+    paths: ["force-app/**"] # This ensures that the workflow is triggered only when there are changes in the force-app directory, which is typically where the Salesforce metadata and code are stored. This allows for more efficient CI/CD processes by only triggering deployments when relevant changes are made, rather than for every push to the branch regardless of the files changed.
     branches:
       - main
       - uat
@@ -102,7 +104,7 @@ jobs:
      # Verify that the JWT key file has been created successfully and has the correct permissions. This step is crucial to ensure that the authentication process can proceed without issues, as an improperly created key file can lead to authentication failures.
        - name: "Verify JWT Key File Creation"
          run: |
-           if [ -f server.key ]; then
+           if [ -f server.key ]; then # -f means check for file. Other options are -d for directory, -e for existence (file or directory), etc. In this case, we want to check if the file has been created successfully before proceeding with authentication.
              echo "JWT key file created successfully."
              ls -l server.key # This will show the permissions of the file, which should be -rw------- (600) for security reasons.
            else
@@ -128,6 +130,7 @@ jobs:
             sf org list
 
        - name: "Validate"
+         if: ${{ vars.IS_RUN_VALIDATION == 'true' }} # This condition allows you to control whether the validation step should be executed or not based on the value of the IS_RUN_VALIDATION variable. By setting this variable to 'true' or 'false' in your workflow_dispatch inputs or as an repository variable, you can easily enable or disable the validation step without having to modify the workflow code itself. This provides flexibility in your CI/CD pipeline, allowing you to skip validation when it's not necessary (e.g., for quick deployments) or to enforce validation when it's critical (e.g., for production deployments).
          run: |
             echo "Perform your validation steps here, such as running tests, static code analysis, or any other checks that are necessary to validate the changes against the target environment. This is where you would implement the specific validation logic that is relevant to your Salesforce deployment process, ensuring that the changes meet the required standards and do not introduce any issues before they are deployed to the respective environments."
             sf project deploy validate --target-org ${{ vars.USERNAME }} -x manifest/package.xml --test-level RunLocalTests --wait 60 
