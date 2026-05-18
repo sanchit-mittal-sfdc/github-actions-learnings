@@ -65,7 +65,7 @@ public without sharing class AccountServiceClass {
             this.rating = rating;
             this.ownerName = ownerName;
         }
-    }
+    } 
 
 
     public class AccountRequest
