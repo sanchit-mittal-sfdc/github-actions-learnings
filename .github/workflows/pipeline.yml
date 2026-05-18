@@ -133,7 +133,7 @@ jobs:
          if: ${{ vars.IS_RUN_VALIDATION == 'true' }} # This condition allows you to control whether the validation step should be executed or not based on the value of the IS_RUN_VALIDATION variable. By setting this variable to 'true' or 'false' in your workflow_dispatch inputs or as an repository variable, you can easily enable or disable the validation step without having to modify the workflow code itself. This provides flexibility in your CI/CD pipeline, allowing you to skip validation when it's not necessary (e.g., for quick deployments) or to enforce validation when it's critical (e.g., for production deployments).
          run: |
             echo "Perform your validation steps here, such as running tests, static code analysis, or any other checks that are necessary to validate the changes against the target environment. This is where you would implement the specific validation logic that is relevant to your Salesforce deployment process, ensuring that the changes meet the required standards and do not introduce any issues before they are deployed to the respective environments."
-            sf project deploy validate --target-org ${{ vars.USERNAME }} -x manifest/package.xml --test-level RunLocalTests --wait 60 
+            sf project deploy validate --target-org ${{ vars.USERNAME }} -x manifest/package.xml --test-level ${{ vars.TEST_LEVEL }} --wait 60 
         
       # Cean up the JWT key file at last. This will ensure that the key file is not left on the runner after the workflow completes, enhancing security by minimizing the risk of unauthorized access to the key file.
        - name: "Clean Up JWT Key File"
@@ -269,7 +269,7 @@ jobs:
        - name: "Deployment"
          run: |
             echo "Perform your validation steps here, such as running tests, static code analysis, or any other checks that are necessary to validate the changes against the target environment. This is where you would implement the specific validation logic that is relevant to your Salesforce deployment process, ensuring that the changes meet the required standards and do not introduce any issues before they are deployed to the respective environments."
-            sf project deploy start --target-org ${{ vars.USERNAME }} -x manifest/package.xml --wait 60 
+            sf project deploy start --target-org ${{ vars.USERNAME }} -x manifest/package.xml --test-level ${{ vars.TEST_LEVEL }} --wait 60 
             
 
         
