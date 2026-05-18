@@ -41,7 +41,9 @@ public with sharing class AccountTriggerHandler
             accountsToUpdate.add( new Account(Id = accId, Account_Summary__c = mapAccountIdToSummary.get(accId)) );
         }
 
-        if(accountsToUpdate.size() > 0)
+        if(accountsToUpdate.size() > 0)            
+        {
             update accountsToUpdate;
+        }
     }
 }
