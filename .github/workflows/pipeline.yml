@@ -72,7 +72,8 @@ jobs:
            # VIMP:The cirrent checkout branch is determined by the ref that triggered the workflow. So if the workflow was triggered by a push to main branch, then main branch will be checked out. If it was triggered by a push to feature/abc branch, then feature/abc branch will be checked out onto the latest commit of that branch. If it was triggered manually and you select main branch while triggering, then main branch will be checked out.
            echo "VIMP:The cirrent checkout branch is determined by the ref that triggered the workflow. So if the workflow was triggered by a push to main branch, then main branch will be checked out. If it was triggered by a push to feature/abc branch, then feature/abc branch will be checked out onto the latest commit of that branch. If it was triggered manually and you select main branch while triggering, then main branch will be checked out."
            git branch                                      # This will show the currently checked out branch with an asterisk (*) next to it. For example, if main branch is checked out, it will show * main. 
-           
+           echo " test_level in repository variable: ${vars.TEST_LEVEL}" # This is just to check if the value of TEST_LEVEL variable is coming correctly or not. This variable is used in the deployment step to specify the level of tests to run during deployment. By printing it here, we can confirm that it's being set correctly based on the inputs provided when triggering the workflow or from the repository variables.
+
 
       # Install salesforce cli    
        - name: "Install Salesforce CLI"
@@ -214,7 +215,7 @@ jobs:
            # VIMP:The cirrent checkout branch is determined by the ref that triggered the workflow. So if the workflow was triggered by a push to main branch, then main branch will be checked out. If it was triggered by a push to feature/abc branch, then feature/abc branch will be checked out onto the latest commit of that branch. If it was triggered manually and you select main branch while triggering, then main branch will be checked out.
            echo "VIMP:The cirrent checkout branch is determined by the ref that triggered the workflow. So if the workflow was triggered by a push to main branch, then main branch will be checked out. If it was triggered by a push to feature/abc branch, then feature/abc branch will be checked out onto the latest commit of that branch. If it was triggered manually and you select main branch while triggering, then main branch will be checked out."
            git branch                                      # This will show the currently checked out branch with an asterisk (*) next to it. For example, if main branch is checked out, it will show * main. 
-           
+           echo " test_level in repository variable: ${vars.TEST_LEVEL}" # This is just to check if the value of TEST_LEVEL variable is coming correctly or not. This variable is used in the deployment step to specify the level of tests to run during deployment. By printing it here, we can confirm that it's being set correctly based on the inputs provided when triggering the workflow or from the repository variables.
 
        # Install salesforce cli    
        - name: "Install Salesforce CLI"
