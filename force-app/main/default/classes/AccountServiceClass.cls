@@ -20,7 +20,7 @@ public without sharing class AccountServiceClass {
     {
         @InvocableVariable
         public Accounts matchingAccounts;
-    }
+    } 
 
     public class Accounts
     {
