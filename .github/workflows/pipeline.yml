@@ -86,7 +86,8 @@ jobs:
        - name: "Install SFDX-GIT-DELTA PLUGIN and check if it's installed successfully"
          run: |
            echo 'y | 'sf plugins install sfdx-git-delta   # This command installs the sfdx-git-delta plugin for Salesforce CLI, which is used to calculate the differences between two Git commits and generate a deployment package based on those differences. The 'echo 'y' |' part is used to automatically confirm the installation prompt that appears when installing the plugin, allowing the installation to proceed without manual intervention. This plugin is particularly useful in CI/CD pipelines for Salesforce, as it helps to optimize deployments by only including the changes that have been made since the last deployment, rather than deploying the entire codebase every time.
-           if sf plugins list | grep "sfdx-git-delta" ; then
+           sf plugins
+           if sf plugins | grep "sfdx-git-delta" ; then
              echo "sfdx-git-delta plugin installed successfully."
            else
              echo "Failed to install sfdx-git-delta plugin."
@@ -278,7 +279,8 @@ jobs:
        - name: "Install SFDX-GIT-DELTA PLUGIN and check if it's installed successfully"
          run: |
            echo 'y | 'sf plugins install sfdx-git-delta   # This command installs the sfdx-git-delta plugin for Salesforce CLI, which is used to calculate the differences between two Git commits and generate a deployment package based on those differences. The 'echo 'y' |' part is used to automatically confirm the installation prompt that appears when installing the plugin, allowing the installation to proceed without manual intervention. This plugin is particularly useful in CI/CD pipelines for Salesforce, as it helps to optimize deployments by only including the changes that have been made since the last deployment, rather than deploying the entire codebase every time.
-           if sf plugins list | grep "sfdx-git-delta" ; then
+           sf plugins
+           if sf plugins | grep "sfdx-git-delta" ; then
              echo "sfdx-git-delta plugin installed successfully."
            else
              echo "Failed to install sfdx-git-delta plugin."
