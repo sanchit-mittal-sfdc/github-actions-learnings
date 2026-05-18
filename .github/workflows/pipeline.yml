@@ -3,7 +3,7 @@ on:
   workflow_dispatch: # Allows manual triggering of the workflow from the GitHub Actions tab along with variable inputs
 
   pull_request:
-    paths: ["force-app/**"] # This ensures that the workflow is triggered only when there are changes in the force-app directory, which is typically where the Salesforce metadata and code are stored. This allows for more efficient CI/CD processes by only triggering deployments when relevant changes are made, rather than for every PR regardless of the files changed.
+    paths: ["force-app/**", ".github/workflows/*"] # This ensures that the workflow is triggered only when there are changes in the force-app directory, which is typically where the Salesforce metadata and code are stored. This allows for more efficient CI/CD processes by only triggering deployments when relevant changes are made, rather than for every PR regardless of the files changed.
     branches: # Here branches are target branches for PRs, so if a PR is raised targeting any of these branches, the workflow will be triggered. This allows for automated checks and deployments to be performed when changes are proposed to these specific branches, ensuring that the code being merged meets the necessary quality and deployment standards.
       - main
       - uat
